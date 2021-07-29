@@ -1,5 +1,5 @@
 import Key from "./Key";
-import "../scss/piano.css";
+import "../css/piano.css";
 import { Do, Re, Mi, Fa, Sol, La, Si } from "./Notes";
 
 const Piano = () => {
