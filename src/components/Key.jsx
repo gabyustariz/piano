@@ -7,17 +7,14 @@ const Key = ({note, id, sound}) => {
         return !flatNotes.includes(note);
     }
 
+    const [keyPressed, setKeyPressed] = useState(false);
+    const [audio] = useState(new Audio(sound));
+    const [playing, setPlaying] = useState(false);
 
-    function useKeyPress(targetKey, url) {
 
-        // State for keeping track of whether key is pressed
-        const [keyPressed, setKeyPressed] = useState(false);
-        const [audio] = useState(new Audio(url));
-        const [playing, setPlaying] = useState(false);
+    function useKeyPress() {
 
         useEffect(() => {
-            // console.log(audio);
-            // console.log(playing);
             playing ? audio.play() : audio.load();
             },
             [playing]
@@ -32,52 +29,54 @@ const Key = ({note, id, sound}) => {
 
         // If pressed key is our target key then set to true
         const downHandler = ({ key }) => {
-          if (key === targetKey) {
+          if (key === note) {
             setKeyPressed(true);
             setPlaying(true);
           }
         };
         // If released key is our target key then set to false
         const upHandler = ({ key }) => {
-          if (key === targetKey) {
+          if (key === note) {
             setKeyPressed(false);
             setPlaying(false);
           }
+        };
+
+        const MouseDown = () => {
+            setKeyPressed(true);
+            setPlaying(true);
+        };
+        const MouseUp = () => {
+            setKeyPressed(false);
+            setPlaying(false);
         };
         // Add event listeners
         useEffect(() => {
           window.addEventListener("keydown", downHandler);
           window.addEventListener("keyup", upHandler);
+          document.getElementById(id).addEventListener("mouseup", MouseUp);
+          document.getElementById(id).addEventListener("mousedown", MouseDown);
           // Remove event listeners on cleanup
           return () => {
             window.removeEventListener("keydown", downHandler);
             window.removeEventListener("keyup", upHandler);
+            document.getElementById(id).addEventListener("mouseup", MouseUp);
+            document.getElementById(id).addEventListener("mousedown", MouseDown);
           };
         }, []); // Empty array ensures that effect is only run on mount and unmount
         return keyPressed;
-      }
+    }
 
-    // function playAudio(url) {
-    //     console.log(url);
-    //     new Audio(url).play();
-    // }
-
-    const keyPressed = useKeyPress(note, sound);
+    const pressed = useKeyPress();
 
     return (
         <Fragment>
         {validNote() ? (
-            <div className={`key ${keyPressed ? "pressed" : ""}`}>
-                {/* onclick={`${useKeyPress(note, sound)}`} */}
-                {/* <p className="key-text" onclick={`${playAudio(sound)}`}> */}
-                <p className="key-text">
-                </p>
-            </div>
+            <button id={id} className={`key ${pressed ? "pressed" : ""}`}>
+            </button>
         ) : (
-            <div className={`key key-flat ${keyPressed ? "pressed" : ""}`}>
-                <p className="key-text">
-                </p>
-            </div>
+            <button id={id} className={`key key-flat ${pressed ? "pressed" : ""}`}>
+            </button>
         )}
         </Fragment>
     );
