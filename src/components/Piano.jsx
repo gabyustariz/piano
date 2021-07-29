@@ -12,8 +12,9 @@ const Piano = () => {
             <div className="keyword">
                 {Notes.map(note => (
                     <Key 
-                    note={note} 
-                    id={id++}
+                    key={id++}
+                    note={note}
+                    id={`Key${id}`}
                     sound={Sounds[note]}
                     />
                 ))}
