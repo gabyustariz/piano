@@ -1,11 +1,6 @@
-import { Fragment } from "react";
 import { useState, useEffect } from "react";
 
 const Key = ({note, id, sound}) => {
-    const flatNotes = ['w', 'e', 't', 'y', 'u'];
-    const validNote = () => {
-        return !flatNotes.includes(note);
-    }
 
     const [keyPressed, setKeyPressed] = useState(false);
     const [audio] = useState(new Audio(sound));
@@ -20,12 +15,12 @@ const Key = ({note, id, sound}) => {
             [playing]
         );
 
-        useEffect(() => {
-            audio.addEventListener('ended', () => setPlaying(false));
-            return () => {
-              audio.removeEventListener('ended', () => setPlaying(false));
-            };
-        }, []);
+        // useEffect(() => {
+        //     audio.addEventListener('ended', () => setPlaying(false));
+        //     return () => {
+        //       audio.removeEventListener('ended', () => setPlaying(false));
+        //     };
+        // }, []);
 
         // If pressed key is our target key then set to true
         const downHandler = ({ key }) => {
@@ -46,6 +41,7 @@ const Key = ({note, id, sound}) => {
             setKeyPressed(true);
             setPlaying(true);
         };
+
         const MouseUp = () => {
             setKeyPressed(false);
             setPlaying(false);
@@ -68,17 +64,15 @@ const Key = ({note, id, sound}) => {
     }
 
     const pressed = useKeyPress();
+    
+    const flatNotes = ['w', 'e', 't', 'y', 'u'];
+    const validNote = () => {
+        return !flatNotes.includes(note);
+    }
 
     return (
-        <Fragment>
-        {validNote() ? (
-            <button id={id} className={`key ${pressed ? "pressed" : ""}`}>
-            </button>
-        ) : (
-            <button id={id} className={`key key-flat ${pressed ? "pressed" : ""}`}>
-            </button>
-        )}
-        </Fragment>
+        <button id={id} className={`key ${!validNote() ? "key-flat" : ""} ${pressed ? "pressed" : ""}`}>
+        </button>
     );
 }
 
