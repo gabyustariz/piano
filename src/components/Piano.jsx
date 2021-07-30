@@ -1,10 +1,10 @@
 import Key from "./Key";
 import "../css/piano.css";
-import { Do, Re, Mi, Fa, Sol, La, Si } from "./Notes";
+import { Do, Re, Mi, Fa, Sol, La, Si, DoM, ReM, FaM, SolM, LaM}from "./Notes";
 
 const Piano = () => {
     const Notes = ['a', 'w', 's', 'e', 'd', 'f', 't', 'g', 'y', 'h', 'u', 'j'];
-    const Sounds = {'a': Do, 'w': Re, 's': Re, 'e': Fa, 'd': Mi, 'f': Fa, 't': Si, 'g': Sol, 'y': Si, 'h': La, 'u': Si, 'j': Si};
+    const Sounds = {'a': Do, 'w': DoM, 's': Re, 'e': ReM, 'd': Mi, 'f': Fa, 't': FaM, 'g': Sol, 'y': SolM, 'h': La, 'u': LaM, 'j': Si};
     let id = 0;
     return (
         <div className="container">
