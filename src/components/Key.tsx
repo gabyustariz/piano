@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react";
 
-const Key = ({note, id, sound}) => {
+interface KeyProps {
+  note: string;
+  id: string; 
+  sound: string;
+}
 
-    const [keyPressed, setKeyPressed] = useState(false);
+const Key = ({note, id, sound} : KeyProps) => {
+
+    const [keyPressed, setKeyPressed] = useState<boolean>(false);
     const [audio] = useState(new Audio(sound));
-    const [playing, setPlaying] = useState(false);
+    
 
 
     function useKeyPress() {
+
+        const [playing, setPlaying] = useState<boolean>(false);
 
         useEffect(() => {
             playing ? audio.play() : audio.load();
@@ -15,22 +23,22 @@ const Key = ({note, id, sound}) => {
             [playing]
         );
 
-        useEffect(() => {
-            audio.addEventListener('ended', () => setPlaying(false));
-            return () => {
-              audio.removeEventListener('ended', () => setPlaying(false));
-            };
-        }, []);
+        // useEffect(() => {
+        //     audio.addEventListener('ended', () => setPlaying(false));
+        //     return () => {
+        //       audio.removeEventListener('ended', () => setPlaying(false));
+        //     };
+        // }, []);
 
         // If pressed key is our target key then set to true
-        const downHandler = ({ key }) => {
+        const downHandler = ({ key }: any) => {
           if (key === note) {
             setKeyPressed(true);
             setPlaying(true);
           }
         };
         // If released key is our target key then set to false
-        const upHandler = ({ key }) => {
+        const upHandler = ({ key }: any) => {
           if (key === note) {
             setKeyPressed(false);
             setPlaying(false);
@@ -50,14 +58,14 @@ const Key = ({note, id, sound}) => {
         useEffect(() => {
           window.addEventListener("keydown", downHandler);
           window.addEventListener("keyup", upHandler);
-          document.getElementById(id).addEventListener("mouseup", MouseUp);
-          document.getElementById(id).addEventListener("mousedown", MouseDown);
+          document.getElementById(id)?.addEventListener("mouseup", MouseUp);
+          document.getElementById(id)?.addEventListener("mousedown", MouseDown);
           // Remove event listeners on cleanup
           return () => {
             window.removeEventListener("keydown", downHandler);
             window.removeEventListener("keyup", upHandler);
-            document.getElementById(id).addEventListener("mouseup", MouseUp);
-            document.getElementById(id).addEventListener("mousedown", MouseDown);
+            document.getElementById(id)?.addEventListener("mouseup", MouseUp);
+            document.getElementById(id)?.addEventListener("mousedown", MouseDown);
           };
         }, []); // Empty array ensures that effect is only run on mount and unmount
         return keyPressed;
@@ -65,7 +73,7 @@ const Key = ({note, id, sound}) => {
 
     const pressed = useKeyPress();
     
-    const flatNotes = ['w', 'e', 't', 'y', 'u'];
+    const flatNotes : string[] = ['w', 'e', 't', 'y', 'u'];
     const validNote = () => {
         return !flatNotes.includes(note);
     }
