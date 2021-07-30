@@ -15,12 +15,12 @@ const Key = ({note, id, sound}) => {
             [playing]
         );
 
-        // useEffect(() => {
-        //     audio.addEventListener('ended', () => setPlaying(false));
-        //     return () => {
-        //       audio.removeEventListener('ended', () => setPlaying(false));
-        //     };
-        // }, []);
+        useEffect(() => {
+            audio.addEventListener('ended', () => setPlaying(false));
+            return () => {
+              audio.removeEventListener('ended', () => setPlaying(false));
+            };
+        }, []);
 
         // If pressed key is our target key then set to true
         const downHandler = ({ key }) => {
@@ -72,6 +72,7 @@ const Key = ({note, id, sound}) => {
 
     return (
         <button id={id} className={`key ${!validNote() ? "key-flat" : ""} ${pressed ? "pressed" : ""}`}>
+          <p>{note}</p>
         </button>
     );
 }
