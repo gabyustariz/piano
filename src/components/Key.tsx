@@ -64,8 +64,6 @@ const Key = ({note, id, sound} : KeyProps) => {
           return () => {
             window.removeEventListener("keydown", downHandler);
             window.removeEventListener("keyup", upHandler);
-            document.getElementById(id)?.addEventListener("mouseup", MouseUp);
-            document.getElementById(id)?.addEventListener("mousedown", MouseDown);
           };
         }, []); // Empty array ensures that effect is only run on mount and unmount
         return keyPressed;
